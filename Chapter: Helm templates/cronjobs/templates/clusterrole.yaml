@@ -1,0 +1,14 @@
+{{- $root := . -}}
+{{- range $role := .Values.clusterRoles }}
+{{- $_ := required (printf "%s.associateServiceAccount" $role) $role.associateServiceAccount }}
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ $role.associateServiceAccount }}
+{{- with $role.rules }}
+rules:
+{{ toYaml . }}
+{{- end }}
+{{- end }}

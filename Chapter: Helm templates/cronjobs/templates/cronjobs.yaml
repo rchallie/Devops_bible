@@ -1,0 +1,30 @@
+{{- $root := . -}}
+{{- range $key, $values := .Values.cronjobs }}
+{{- $_ := required (printf "%s.image entry doesn't specified" $key) $values.image }}
+
+---
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: {{ include "cronjobs.fullname" $ }}-{{ $key }}
+  labels:
+    {{- include "cronjobs.labels" $ | nindent 4 }}
+spec:
+  schedule: '{{ (pluck "schedule" $values $root.Values | first | default "0 0 * * *") }}'
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          {{- if $values.associateServiceAccount }}
+          serviceAccountName: {{ $values.associateServiceAccount }} 
+          {{- end }}
+          containers:
+          - name: {{ include "cronjobs.fullname" $ }}-{{ $key }}
+            image: {{ $values.image }}
+            imagePullPolicy: {{ (pluck "imagePullPolicy" $values $root.Values | first | default "IfNotPresent") }}
+            {{- with $values.command }}
+            command:
+              {{- toYaml . | nindent 14 }}
+            {{- end }}
+          restartPolicy: {{ (pluck "restatPolicy" $values $root.Values | first | default "OnFailure") }} 
+{{- end }}

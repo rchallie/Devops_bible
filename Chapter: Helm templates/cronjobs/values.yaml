@@ -1,0 +1,16 @@
+clusterRoles:
+  - associateServiceAccount: namespace-destroyer
+    rules:
+    - apiGroups: [""]
+      resources: ["namespaces"]
+      verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
+
+cronjobs:
+  test:
+    associateServiceAccount: namespace-destroyer
+    image: bitnami/kubectl:latest
+    command:
+      - /bin/sh
+      - -c
+      - kubectl get ns -o go-template --template '{{range .items}}{{.metadata.name}} {{.metadata.creationTimestamp}}{{"\n"}}{{end}}' | awk '$2 <= "'$(date -d'now-4 hours' -Ins --utc | sed 's/+0000/Z/')'" { print $1 }'| grep -E '^test-([[:alnum:]]{6})$' | xargs -r kubectl delete ns --dry-run=client 
+    schedule: "* * * * *"

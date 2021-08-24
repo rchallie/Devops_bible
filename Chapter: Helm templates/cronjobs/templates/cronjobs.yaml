@@ -11,6 +11,12 @@ metadata:
     {{- include "cronjobs.labels" $ | nindent 4 }}
 spec:
   schedule: '{{ (pluck "schedule" $values $root.Values | first | default "0 0 * * *") }}'
+  {{- if $values.successfulJobsHistoryLimit }}
+  successfulJobsHistoryLimit: {{ $values.successfulJobsHistoryLimit }}
+  {{- end }}
+  {{- if $values.successfulJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ $values.successfulJobsHistoryLimit }}
+  {{- end }}
   jobTemplate:
     spec:
       template:

@@ -13,5 +13,5 @@ cronjobs:
     command:
       - /bin/sh
       - -c
-      - kubectl get ns -o go-template --template '{{range .items}}{{.metadata.name}} {{.metadata.creationTimestamp}}{{"\n"}}{{end}}' | awk '$2 <= "'$(date -d'now-4 hours' -Ins --utc | sed 's/+0000/Z/')'" { print $1 }'| grep -E '^test-([[:alnum:]]{6})$' | xargs -r kubectl delete ns --dry-run=client 
+      - kubectl get ns -o go-template --template '{{range .items}}{{.metadata.name}} {{.metadata.creationTimestamp}}{{"\n"}}{{end}}' | awk '$2 <= "'$(date -d'now-4 hours' -Ins --utc | sed 's/+0000/Z/')'" { print $1 }'| grep -E '^test-([[:alnum:]]{6})$' | xargs -r kubectl delete ns --dry-run=client -l auto-clean=true 
     schedule: "* * * * *"

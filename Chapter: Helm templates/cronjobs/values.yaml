@@ -6,6 +6,7 @@ clusterRoles:
       verbs: ["get", "list", "watch", "create", "update", "patch", "delete"]
 
 cronjobs:
+  # Destroy namespaces called "test-xxxxxx" with more than 4 hours of life
   test:
     associateServiceAccount: namespace-destroyer
     image: bitnami/kubectl:latest

@@ -8,6 +8,9 @@
 alias ls='ls --color=auto'
 PS1='[\u@\h \W]\$ '
 
+# Change keyboard language.
+setxkbmap fr
+
 # Goto `Dev` folder.
 dev()
 {

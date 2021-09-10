@@ -28,7 +28,11 @@ perso()
 }
 
 # Goto home.
-home()
-{
-	cd $HOME
-}
+alias home='cd $HOME'
+
+# Kubernetes aliases.
+alias kgp='kubectl get pods'
+alias kgs='kubectl get secrets'
+alias kgi='kubectl get ing'
+alias kgn='kubectl get nodes'
+alias kgns='kubectl get ns'

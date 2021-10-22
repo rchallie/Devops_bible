@@ -1,3 +1,13 @@
+" Vim settings
+" >
+:set number
+:set mouse=a
+:set noswapfile
+:set tabstop=2
+:set shiftwidth=2
+:set expandtab
+" <
+
 " Pathogen
 " https://github.com/tpope/vim-pathogen
 " Necessary configuration
@@ -11,10 +21,14 @@ filetype plugin indent on
 " https://github.com/preservim/nerdtree
 " Default keyboard mapping
 " <
-nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
 " >
+" Disable arrow icons
+" >
+let g:NERDTreeDirArrowExpandable = "\u00a0"
+let g:NERDTreeDirArrowCollapsible = "\u00a0"
+" <
 
 " Fzf.vim
 " Install fzf package
